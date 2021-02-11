@@ -182,7 +182,6 @@ class _ContactFormState extends State<ContactForm> {
                               .addContacts(
                                   name:
                                       "${fnamecontroller.text} ${lnamecontroller.text}",
-                                  email: emailcontroller.text,
                                   phone: phonecontroller.text);
                           Navigator.pop(context);
                         }
