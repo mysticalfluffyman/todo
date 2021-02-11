@@ -1,10 +1,8 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/forms/contactForm.dart';
 import 'package:todo/models/contacts.dart';
-import 'package:todo/forms/todoForm.dart';
 
 class ContactsPage extends StatefulWidget {
   ContactsPage({Key key, this.homeScaffoldKey}) : super(key: key);
@@ -57,10 +55,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                   backgroundImage:
                                       AssetImage("assets/index.png"),
                                 ),
-                                title: Text(data.contacts[index].displayName ??
-                                    data.contacts[index].androidAccountName),
-                                subtitle: Text(
-                                    phoneNumber(data.contacts[index].phones)),
+                                subtitle: Text(data.contacts[index]),
                               );
                             })
                         : Center(
@@ -97,11 +92,5 @@ class _ContactsPageState extends State<ContactsPage> {
         ]),
       ),
     );
-  }
-
-  String phoneNumber(Iterable<Item> phones) {
-    String phonesText = phones.map((e) => "${e.value}" ?? "").toString();
-
-    return phonesText;
   }
 }

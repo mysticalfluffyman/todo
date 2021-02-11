@@ -1,11 +1,7 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/forms/contactForm.dart';
 import 'package:todo/models/callLog.dart';
-import 'package:todo/models/contacts.dart';
-import 'package:todo/forms/todoForm.dart';
 
 class LogsPage extends StatefulWidget {
   LogsPage({Key key, this.homeScaffoldKey}) : super(key: key);
@@ -58,10 +54,7 @@ class _LogsPageState extends State<LogsPage> {
                                   backgroundImage:
                                       AssetImage("assets/index.png"),
                                 ),
-                                title: Text(data.logs[index].name ??
-                                    data.logs[index].number),
-                                subtitle: Text(
-                                    "${data.logs[index].duration.toString()} seconds"),
+                                subtitle: Text("${data.logs[index]} "),
                               );
                             })
                         : Center(

@@ -13,6 +13,7 @@ import 'package:todo/models/todo.dart';
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TodoModelAdapter());
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
