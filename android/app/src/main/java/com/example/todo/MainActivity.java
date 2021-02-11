@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
 import android.content.IntentFilter;
+import android.provider.Contacts;
 import android.provider.ContactsContract;
 
 
@@ -115,9 +117,12 @@ public class MainActivity extends FlutterActivity {
        private ArrayList getAllContacts() {
             ArrayList<String> nameList = new ArrayList<>();
             ContentResolver cr = getContentResolver();
-            Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-            null, null, null, null);
-            if ((cur != null ? cur.getCount() : 0) > 0) {
+           Cursor cur = null;
+           if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ECLAIR) {
+               cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+               null, null, null, null);
+           }
+           if ((cur != null ? cur.getCount() : 0) > 0) {
                while (cur != null && cur.moveToNext()) {
                   String id = cur.getString(
                   cur.getColumnIndex(ContactsContract.Contacts._ID));
@@ -125,12 +130,15 @@ public class MainActivity extends FlutterActivity {
                   ContactsContract.Contacts.DISPLAY_NAME));
                   nameList.add(name);
                   if (cur.getInt(cur.getColumnIndex( ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                     Cursor pCur = cr.query(
-                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                     null,
-                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                     new String[]{id}, null);
-                     while (pCur.moveToNext()) {
+                      Cursor pCur = null;
+                      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ECLAIR) {
+                          pCur = cr.query(
+                          ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                          null,
+                          ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                          new String[]{id}, null);
+                      }
+                      while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                         ContactsContract.CommonDataKinds.Phone.NUMBER));
                      }
@@ -145,15 +153,15 @@ public class MainActivity extends FlutterActivity {
          }
          private void addContact(String name, String phone) {
             ContentValues values = new ContentValues();
-            values.put(People.NUMBER, phone);
-            values.put(People.TYPE, Phone.TYPE_CUSTOM);
-            values.put(People.LABEL, name);
-            values.put(People.NAME, name);
-            Uri dataUri = getContentResolver().insert(People.CONTENT_URI, values);
-            Uri updateUri = Uri.withAppendedPath(dataUri, People.Phones.CONTENT_DIRECTORY);
+            values.put(Contacts.People.NUMBER, phone);
+            values.put(Contacts.People.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM);
+            values.put(Contacts.People.LABEL, name);
+            values.put(Contacts.People.NAME, name);
+            Uri dataUri = getContentResolver().insert(Contacts.People.CONTENT_URI, values);
+            Uri updateUri = Uri.withAppendedPath(dataUri, Contacts.People.Phones.CONTENT_DIRECTORY);
             values.clear();
-            values.put(People.Phones.TYPE, People.TYPE_MOBILE);
-            values.put(People.NUMBER, phone);
+            values.put(Contacts.People.Phones.TYPE, Contacts.People.TYPE_MOBILE);
+            values.put(Contacts.People.NUMBER, phone);
             updateUri = getContentResolver().insert(updateUri, values);
           }
 
