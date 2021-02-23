@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -11,9 +12,10 @@ class CallLogs extends ChangeNotifier {
     try {
       final List<dynamic> result =
           await platformMethodChannel.invokeMethod('getlogs');
+
       _message = result;
     } on PlatformException catch (e) {
-      _message = ["Can't fetch ${e.message}."];
+      _message = ["Permission Denied"];
     }
     this.logs = _message;
 

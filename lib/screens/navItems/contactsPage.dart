@@ -46,6 +46,11 @@ class _ContactsPageState extends State<ContactsPage> {
                         topRight: Radius.circular(30))),
                 child: Consumer<ContactsList>(
                   builder: (context, data, child) {
+                    if (data.contacts[0] == "Permission Denied") {
+                      Future.delayed(Duration(seconds: 2)).whenComplete(() {
+                        widget.homeScaffoldKey.currentState.setState(() {});
+                      });
+                    }
                     return data.contacts.isNotEmpty
                         ? ListView.builder(
                             itemCount: data.contacts.length,

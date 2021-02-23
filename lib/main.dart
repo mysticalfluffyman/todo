@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/callLog.dart';
 import 'package:todo/models/contacts.dart';
@@ -9,9 +8,10 @@ import 'package:todo/models/todoList.dart';
 import 'package:todo/screens/homePage.dart';
 import 'package:todo/forms/todoForm.dart';
 import 'package:todo/models/todo.dart';
+import 'package:todo/screens/splash.dart';
 
 void main() async {
-  await Hive.initFlutter();
+  await Hive.init("/data/user/0/com.example.todo/app_flutter");
   Hive.registerAdapter(TodoModelAdapter());
 
   runApp(MultiProvider(
@@ -26,8 +26,19 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,7 +49,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.blueGrey[700],
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.blueGrey[700],
-          textTheme: GoogleFonts.sourceSansProTextTheme(TextTheme(
+          textTheme: TextTheme(
             headline1: TextStyle(
               color: Colors.white,
               fontSize: 35,
@@ -64,8 +75,8 @@ class MyApp extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
-          ))),
-      home: HomePage(),
+          )),
+      home: Splash(),
     );
   }
 }

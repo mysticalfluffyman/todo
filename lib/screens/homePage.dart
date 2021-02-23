@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/callLog.dart';
 import 'package:todo/models/contacts.dart';
@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    askpermission();
+
     Provider.of<TodoList>(context, listen: false).readTodo();
     Provider.of<ContactsList>(context, listen: false).fetchContacts();
     Provider.of<CallLogs>(context, listen: false).fetchLogs();
@@ -121,16 +121,4 @@ class _HomePageState extends State<HomePage>
   //     print(e);
   //   }).toList();
   // }
-}
-
-askpermission() async {
-  await Permission.contacts.isGranted.then((value) async {
-    if (!value) {
-      PermissionStatus permissionStatus = await Permission.contacts.request();
-      if (permissionStatus.isGranted) {
-      } else {
-        await Permission.contacts.request();
-      }
-    }
-  });
 }
