@@ -35,7 +35,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.todo"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -56,6 +56,8 @@ flutter {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
+    // implementation "androidx.core:core-ktx:+"
+
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

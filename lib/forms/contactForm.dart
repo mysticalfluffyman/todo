@@ -1,4 +1,3 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -166,11 +165,7 @@ class _ContactFormState extends State<ContactForm> {
                               BorderSide(color: Colors.white, width: 2.0)),
                     ),
                     validator: (value) {
-                      return value.isEmpty
-                          ? "Field cannot be empty"
-                          : !EmailValidator.validate(value)
-                              ? "Email format is wrong"
-                              : null;
+                      return value.isEmpty ? "Field cannot be empty" : null;
                     },
                   ),
                   Padding(
@@ -179,7 +174,7 @@ class _ContactFormState extends State<ContactForm> {
                       onTap: () {
                         if (_formKey.currentState.validate()) {
                           Provider.of<ContactsList>(context, listen: false)
-                              .addContacts(
+                              .askPermissionwrite(
                                   name:
                                       "${fnamecontroller.text} ${lnamecontroller.text}",
                                   phone: phonecontroller.text);

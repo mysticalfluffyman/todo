@@ -1,11 +1,13 @@
 package com.example.todo;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,7 +27,8 @@ import java.util.HashMap;
 import android.provider.CallLog;
 import android.util.Log;
 import android.widget.Toast;
-
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 //import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodCall;
@@ -34,13 +37,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 
-//import io.flutter.app.FlutterActivity;
-// import com.pusher.pushnotifications.PushNotifications;
-// import com.pusher.pushnotifications.*;
 
-// import com.pusher.pushnotifications.auth.AuthData;
-// import com.pusher.pushnotifications.auth.AuthDataGetter;
-// import com.pusher.pushnotifications.auth.BeamsTokenProvider;
 
 public class MainActivity extends FlutterActivity {
 
@@ -53,8 +50,7 @@ public class MainActivity extends FlutterActivity {
         m =  new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), NotiChannel);
                 m.setMethodCallHandler((call, result) -> {
                     if (call.method.equals("getlogs")) {
-                        
-                       
+
                         ArrayList<String> logs = getLogs();
                         
                         result.success(logs);
@@ -68,7 +64,22 @@ public class MainActivity extends FlutterActivity {
                         final String phone = call.argument("phone");
                         addContact(name,phone);
 
+                    }else if(call.method.equals("getpermissionscall")){
+                       checkPermission(Manifest.permission.READ_CALL_LOG,1001);
+                        result.success("a");
+                        
+                    }else if(call.method.equals("getpermissionscontactsread")){
+                        
+                      checkPermission(Manifest.permission.READ_CONTACTS,1002);
+                     result.success("b");
+
                     }
+                    else if(call.method.equals("getpermissionscontactswrite")){
+                        
+                         checkPermission(Manifest.permission.WRITE_CONTACTS,1003);
+                        result.success("c");
+   
+                       }
                     
                 });
     }
@@ -164,6 +175,65 @@ public class MainActivity extends FlutterActivity {
             values.put(Contacts.People.NUMBER, phone);
             updateUri = getContentResolver().insert(updateUri, values);
           }
+    public void checkPermission(String permission, int requestCode)
+    {
+        if (ContextCompat.checkSelfPermission(MainActivity.this, permission)
+                == PackageManager.PERMISSION_DENIED) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[] { permission },
+                    requestCode);
+        }
+        else {
+            // Toast.makeText(this,"Permission Granted Already",Toast.LENGTH_SHORT).show();
+           
+
+        }
+    }
+
+    @Override
+public void onRequestPermissionsResult(int requestCode, String[] permissions,
+        int[] grantResults) {
+    switch (requestCode) {
+        case 1001:
+
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Toast.makeText(this,"Permission granted for call log access ",Toast.LENGTH_SHORT).show();
+
+
+            }  else {
+                Toast.makeText(this,"Permission denied for call log access ",Toast.LENGTH_SHORT).show();
+
+            }
+        case 1002:
+
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Toast.makeText(this,"Permission granted for contact read access ",Toast.LENGTH_SHORT).show();
+
+
+            }  else {
+                Toast.makeText(this,"Permission denied for contact read access ",Toast.LENGTH_SHORT).show();
+
+            }
+        case 1003:
+
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Toast.makeText(this,"Permission granted for contact write access ",Toast.LENGTH_SHORT).show();
+
+
+            }  else {
+                Toast.makeText(this,"Permission denied for contact write access ",Toast.LENGTH_SHORT).show();
+
+            }
+            return;
+        }
+        
+    }
+
 
 
 }

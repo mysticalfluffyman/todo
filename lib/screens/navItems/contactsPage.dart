@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/forms/contactForm.dart';
 import 'package:todo/models/contacts.dart';
@@ -16,8 +17,11 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     // TODO: implement initState
+    Provider.of<ContactsList>(context, listen: false).askPermission();
+
+    // Provider.of<ContactsList>(context, listen: false).fetchContacts();
+
     super.initState();
-    ;
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import 'package:provider/provider.dart';
 
 class ContactsList extends ChangeNotifier {
@@ -12,29 +12,41 @@ class ContactsList extends ChangeNotifier {
     const platformMethodChannel =
         const MethodChannel('com.example.todos.callLogs');
     try {
-      final List<dynamic> result =
+      final List<dynamic> result1 =
           await platformMethodChannel.invokeMethod('getcontacts');
-      contact = result;
+      contact = result1;
     } on PlatformException catch (e) {
-      contact = ["Can't fetch ${e.message}."];
+      contact = ["Permission Denied"];
     }
     this.contacts.addAll(contact);
     notifyListeners();
   }
 
+  Future askPermission() async {
+    const platformMethodChannel =
+        const MethodChannel('com.example.todos.callLogs');
+    final dynamic result =
+        await platformMethodChannel.invokeMethod('getpermissionscontactsread');
+    Future.delayed(Duration(seconds: 5)).then((value) => fetchContacts());
+  }
+
+  Future askPermissionwrite({String name, phone}) async {
+    const platformMethodChannel =
+        const MethodChannel('com.example.todos.callLogs');
+    final dynamic result =
+        await platformMethodChannel.invokeMethod('getpermissionscontactswrite');
+    Future.delayed(Duration(seconds: 5))
+        .then((value) => addContacts(name: name, phone: phone));
+  }
+
   Future addContacts({String name, phone}) async {
     print(name);
-    PermissionStatus permissionStatus = await Permission.contacts.status;
-    if (permissionStatus == PermissionStatus.granted) {
-      const platformMethodChannel =
-          const MethodChannel('com.example.todos.callLogs');
-      try {
-        var result = await platformMethodChannel
-            .invokeMethod('addcontact', {"name": name, "phone": phone});
-        fetchContacts();
-      } on PlatformException catch (e) {}
-    } else {
-      Permission.contacts.request();
-    }
+    const platformMethodChannel =
+        const MethodChannel('com.example.todos.callLogs');
+    try {
+      var result = await platformMethodChannel
+          .invokeMethod('addcontact', {"name": name, "phone": phone});
+      fetchContacts();
+    } on PlatformException catch (e) {}
   }
 }
