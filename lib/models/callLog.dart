@@ -21,4 +21,12 @@ class CallLogs extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future askPermissions() async {
+    const platformMethodChannel =
+        const MethodChannel('com.example.todos.callLogs');
+    final dynamic result =
+        await platformMethodChannel.invokeMethod('getpermissionscall');
+    Future.delayed(Duration(seconds: 5)).then((value) => fetchLogs());
+  }
 }

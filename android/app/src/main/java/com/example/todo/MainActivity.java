@@ -186,7 +186,7 @@ public class MainActivity extends FlutterActivity {
                     requestCode);
         }
         else {
-            Toast.makeText(this,"Permission Granted Already",Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this,"Permission Granted Already",Toast.LENGTH_SHORT).show();
            
 
         }
@@ -200,7 +200,7 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions,
 
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,"Permission granted for call log access ",Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this,"Permission granted for call log access ",Toast.LENGTH_SHORT).show();
 
 
             }  else {
@@ -211,7 +211,7 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions,
 
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,"Permission granted for contact read access ",Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this,"Permission granted for contact read access ",Toast.LENGTH_SHORT).show();
 
 
             }  else {
@@ -222,7 +222,7 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions,
 
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,"Permission granted for contact write access ",Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this,"Permission granted for contact write access ",Toast.LENGTH_SHORT).show();
 
 
             }  else {

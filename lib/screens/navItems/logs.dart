@@ -16,7 +16,7 @@ class _LogsPageState extends State<LogsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    ;
+    Provider.of<CallLogs>(context, listen: false).askPermissions();
   }
 
   @override

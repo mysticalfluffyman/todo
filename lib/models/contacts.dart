@@ -12,14 +12,31 @@ class ContactsList extends ChangeNotifier {
     const platformMethodChannel =
         const MethodChannel('com.example.todos.callLogs');
     try {
-      final List<dynamic> result =
+      final List<dynamic> result1 =
           await platformMethodChannel.invokeMethod('getcontacts');
-      contact = result;
+      contact = result1;
     } on PlatformException catch (e) {
       contact = ["Permission Denied"];
     }
     this.contacts.addAll(contact);
     notifyListeners();
+  }
+
+  Future askPermission() async {
+    const platformMethodChannel =
+        const MethodChannel('com.example.todos.callLogs');
+    final dynamic result =
+        await platformMethodChannel.invokeMethod('getpermissionscontactsread');
+    Future.delayed(Duration(seconds: 5)).then((value) => fetchContacts());
+  }
+
+  Future askPermissionwrite({String name, phone}) async {
+    const platformMethodChannel =
+        const MethodChannel('com.example.todos.callLogs');
+    final dynamic result =
+        await platformMethodChannel.invokeMethod('getpermissionscontactswrite');
+    Future.delayed(Duration(seconds: 5))
+        .then((value) => addContacts(name: name, phone: phone));
   }
 
   Future addContacts({String name, phone}) async {

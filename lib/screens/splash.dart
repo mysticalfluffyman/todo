@@ -14,7 +14,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    check();
+    // check();
   }
 
   @override
@@ -61,13 +61,13 @@ class _SplashState extends State<Splash> {
     }
   }
 
-  check() async {
-    bool a = await askpermission();
-    if (a) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomePage()));
-    } else {
-      print("Check denied");
-    }
-  }
+  // check() async {
+  //   bool a = await askpermission();
+  //   if (a) {
+  //     Navigator.of(context)
+  //         .push(MaterialPageRoute(builder: (context) => HomePage()));
+  //   } else {
+  //     print("Check denied");
+  //   }
+  // }
 }

@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
               fontWeight: FontWeight.w400,
             ),
           )),
-      home: Splash(),
+      home: HomePage(),
     );
   }
 }

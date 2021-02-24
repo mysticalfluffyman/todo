@@ -26,13 +26,21 @@ class _HomePageState extends State<HomePage>
     super.initState();
 
     Provider.of<TodoList>(context, listen: false).readTodo();
-    Provider.of<ContactsList>(context, listen: false).fetchContacts();
-    Provider.of<CallLogs>(context, listen: false).fetchLogs();
   }
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    List<Widget> op = [
+      TodoPage(homeScaffoldKey: _homescaffoldkey),
+      ContactsPage(
+        homeScaffoldKey: _homescaffoldkey,
+      ),
+      LogsPage(
+        homeScaffoldKey: _homescaffoldkey,
+      )
+    ];
+
     return Scaffold(
         backgroundColor: theme.primaryColor,
         key: _homescaffoldkey,
@@ -102,15 +110,7 @@ class _HomePageState extends State<HomePage>
                 label: "Calls")
           ],
         ),
-        body: bottomNavigationBarIndex == 0
-            ? TodoPage(homeScaffoldKey: _homescaffoldkey)
-            : bottomNavigationBarIndex == 1
-                ? ContactsPage(
-                    homeScaffoldKey: _homescaffoldkey,
-                  )
-                : LogsPage(
-                    homeScaffoldKey: _homescaffoldkey,
-                  ));
+        body: op[bottomNavigationBarIndex]);
   }
 
   // void getcalllog() async {

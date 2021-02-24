@@ -174,7 +174,7 @@ class _ContactFormState extends State<ContactForm> {
                       onTap: () {
                         if (_formKey.currentState.validate()) {
                           Provider.of<ContactsList>(context, listen: false)
-                              .addContacts(
+                              .askPermissionwrite(
                                   name:
                                       "${fnamecontroller.text} ${lnamecontroller.text}",
                                   phone: phonecontroller.text);
