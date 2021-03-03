@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:todo/screens/homePage.dart';
 
 class Splash extends StatefulWidget {
@@ -30,44 +31,10 @@ class _SplashState extends State<Splash> {
   }
 
   Future<bool> askpermission() async {
-    const platformMethodChannel =
-        const MethodChannel('com.example.todos.callLogs');
-    try {
-      final dynamic result =
-          await platformMethodChannel.invokeMethod('getpermissionscall');
-      print(result);
-
-      try {
-        final dynamic result = await platformMethodChannel
-            .invokeMethod('getpermissionscontactsread');
-        print(result);
-
-        try {
-          final dynamic result = await platformMethodChannel
-              .invokeMethod('getpermissionscontactswrite');
-          print(result);
-          return true;
-        } catch (e) {
-          return false;
-        }
-
-        return result;
-      } on PlatformException catch (e) {
-        return false;
-      }
-    } on PlatformException catch (e) {
-      // contact = ["Can't fetch ${e.message}."];
-      return false;
+    var status = await Permission.contacts.status;
+    if (status == PermissionStatus.denied ||
+        status == PermissionStatus.restricted) {
+      Permission.contacts.request();
     }
   }
-
-  // check() async {
-  //   bool a = await askpermission();
-  //   if (a) {
-  //     Navigator.of(context)
-  //         .push(MaterialPageRoute(builder: (context) => HomePage()));
-  //   } else {
-  //     print("Check denied");
-  //   }
-  // }
 }

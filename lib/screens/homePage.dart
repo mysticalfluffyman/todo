@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/callLog.dart';
 import 'package:todo/models/contacts.dart';
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    // askpermission();
     Provider.of<TodoList>(context, listen: false).readTodo();
   }
 
@@ -99,13 +100,11 @@ class _HomePageState extends State<HomePage>
                 icon: Icon(Icons.calendar_today_outlined),
                 label: "TODOs"),
             BottomNavigationBarItem(
-                activeIcon:
-                    Icon(Icons.calendar_today_outlined, color: Colors.cyan),
+                activeIcon: Icon(Icons.contact_phone, color: Colors.cyan),
                 icon: Icon(Icons.contact_phone),
                 label: "Contacts"),
             BottomNavigationBarItem(
-                activeIcon:
-                    Icon(Icons.calendar_today_outlined, color: Colors.cyan),
+                activeIcon: Icon(Icons.call, color: Colors.cyan),
                 icon: Icon(Icons.call),
                 label: "Calls")
           ],

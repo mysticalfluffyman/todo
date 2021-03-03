@@ -1,32 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:call_log/call_log.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 class CallLogs extends ChangeNotifier {
-  List<dynamic> logs = [];
+  Iterable<CallLogEntry> logs = [];
 
   Future fetchLogs() async {
-    var _message;
-    const platformMethodChannel =
-        const MethodChannel('com.example.todos.callLogs');
     try {
-      final List<dynamic> result =
-          await platformMethodChannel.invokeMethod('getlogs');
-
-      _message = result;
-    } on PlatformException catch (e) {
-      _message = ["Permission Denied"];
-    }
-    this.logs = _message;
-
+      Iterable<CallLogEntry> entries = await CallLog.query();
+      this.logs = entries;
+    } catch (e) {}
+    print(logs);
     notifyListeners();
-  }
-
-  Future askPermissions() async {
-    const platformMethodChannel =
-        const MethodChannel('com.example.todos.callLogs');
-    final dynamic result =
-        await platformMethodChannel.invokeMethod('getpermissionscall');
-    Future.delayed(Duration(seconds: 5)).then((value) => fetchLogs());
   }
 }
