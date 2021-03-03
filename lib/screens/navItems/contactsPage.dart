@@ -16,11 +16,7 @@ class ContactsPage extends StatefulWidget {
 class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
-    // TODO: implement initState
-    Provider.of<ContactsList>(context, listen: false).askPermission();
-
-    // Provider.of<ContactsList>(context, listen: false).fetchContacts();
-
+    Provider.of<ContactsList>(context, listen: false).fetchContacts();
     super.initState();
   }
 
@@ -54,12 +50,27 @@ class _ContactsPageState extends State<ContactsPage> {
                         ? ListView.builder(
                             itemCount: data.contacts.length,
                             itemBuilder: (context, index) {
+                              var phones = data.contacts
+                                  .elementAt(index)
+                                  .phones
+                                  .map((e) {
+                                print(e.value);
+                                return e.value ?? "";
+                              }).toList();
                               return ListTile(
                                 leading: CircleAvatar(
                                   backgroundImage:
                                       AssetImage("assets/index.png"),
                                 ),
-                                subtitle: Text(data.contacts[index]),
+                                title: Text(data.contacts
+                                        .elementAt(index)
+                                        .displayName ??
+                                    ""),
+                                subtitle: Text(phones.length > 1
+                                    ? phones[0]
+                                    : data.contacts
+                                        .elementAt(index)
+                                        .androidAccountName),
                               );
                             })
                         : Center(
@@ -81,6 +92,7 @@ class _ContactsPageState extends State<ContactsPage> {
             left: width * 0.3,
             child: Text(
               "Your Contacts",
+              textAlign: TextAlign.center,
               style: theme.textTheme.headline1,
             ),
           ),

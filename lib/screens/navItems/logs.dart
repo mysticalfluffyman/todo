@@ -16,7 +16,7 @@ class _LogsPageState extends State<LogsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<CallLogs>(context, listen: false).askPermissions();
+    Provider.of<CallLogs>(context, listen: false).fetchLogs();
   }
 
   @override
@@ -54,11 +54,17 @@ class _LogsPageState extends State<LogsPage> {
                                   backgroundImage:
                                       AssetImage("assets/index.png"),
                                 ),
-                                subtitle: Text("${data.logs[index]} "),
+                                title: Text(
+                                    "${data.logs.elementAt(index).name ?? data.logs.elementAt(index).number}"),
+                                subtitle: Text(
+                                    "${data.logs.elementAt(index).callType.toString().split(".")[1].toUpperCase()},  ${data.logs.elementAt(index).duration} secs"),
                               );
                             })
                         : Center(
-                            child: Text("Working on it ..."),
+                            child: Text(
+                              "Working on it ...",
+                              style: TextStyle(color: Colors.black),
+                            ),
                           );
                   },
                 )),
